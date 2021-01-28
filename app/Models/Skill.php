@@ -12,4 +12,9 @@ class Skill extends Model
     protected $dates = ['deleted_at'];
 
     use HasFactory;
+
+    function applicants() {
+
+        return $this->hasMany(Applicant::class, 'applicant_id');
+    }
 }
