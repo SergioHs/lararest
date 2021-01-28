@@ -13,6 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//  Route::get('/', function () {
+//      return view('welcome');
+// });
+
+Route::group(array('prefix' => 'api'), function()
+{
+
+  Route::get('/', function () {
+      return response()->json(['message' => 'Applicants API', 'status' => 'Connected']);;
+  });
+
+  Route::resource('applicants', 'App\Http\Controllers\ApplicantsController');
+  Route::resource('skills', 'App\Http\Controllers\SkillsController');
+
+});
+
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('api');
+    //Aqui pode ser a rota do SPA
 });
