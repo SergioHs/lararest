@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skill extends Model
 {
+    protected $fillable = ['skill'];
+
+    protected $dates = ['deleted_at'];
+
     use HasFactory;
 }
