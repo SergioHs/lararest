@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Skill;
 use App\Models\Applicant;
 
+use Illuminate\Support\Facades\DB;
+
+
 class ApplicantsController extends Controller
 {
     /**
@@ -15,6 +18,12 @@ class ApplicantsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+        $applicants = Applicant::with('skills')->get();
+        return response()->json($applicants);
+    }
+
+    public function applicantsbyskill($idSkill)
     {
         $applicants = Applicant::with('skills')->get();
         return response()->json($applicants);
@@ -47,9 +56,49 @@ class ApplicantsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        //$applicants = Applicant::with('skills')->find('1');
+
+
+        //  $applicants = DB::table('skills')->where('skills.id', '=', 2)
+        //  ->leftJoin('applicants', 'applicants.id', '=', 'skills.applicant_id')
+        //  ->get();
+
+        //  $applicants = DB::table('skills')
+        //  ->rightJoin('applicants', 'applicants.id', '=', 'skills.applicant_id')
+        //  ->get();
+
+        //  $applicants = DB::table('applicants')
+        //  ->leftJoin('skills', 'skills.applicant_id', '=', 'applicants.id')
+        //  ->get();
+
+        // $applicants = DB::table('applicants')
+        // ->leftJoin('skills', 'skills.applicant_id', '=', 'applicants.id')
+        // ->get();
+
+        //$applicants = Skill::with('applicants')->get();
+
+       // Eu quero os applicants que tem X skill
+
+
+        $skills = Skill::where('skill', '=', 1)->get();
+
+        $applicantsArray = [];
+        foreach ($skills as $skill){
+
+            ($skill->applicant_id);
+
+        }
+
+        $applicants = Applicant::where
+
+
+       // $applicants = Applicants::find()->skills()->where('applicant_id', '=', 'foo');
+
+
+
+        return response()->json($skills);
     }
 
     /**

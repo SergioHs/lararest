@@ -29,8 +29,6 @@ Route::group(array('prefix' => 'api'), function()
 
 });
 
-
-
 Route::get('/', function () {
     return redirect('api');
     //Aqui pode ser a rota do SPA
