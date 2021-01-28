@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Skill;
+use App\Models\Applicant;
+
 class ApplicantsController extends Controller
 {
     /**
@@ -13,7 +16,8 @@ class ApplicantsController extends Controller
      */
     public function index()
     {
-        //
+        $applicants = Applicant::with('skills')->get();
+        return response()->json($applicants);
     }
 
     /**
