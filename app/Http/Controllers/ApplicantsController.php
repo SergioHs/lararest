@@ -19,14 +19,31 @@ class ApplicantsController extends Controller
      */
     public function index()
     {
-        $applicants = Applicant::with('skills')->get();
-        return response()->json($applicants);
+        //$applicants = Applicant::all();
+
+        // $applicants = Applicant::find();
+
+        // foreach ($applicants->skills as $skill) {
+        //         //echo($skill);
+
+        // }
+
+
+
+        $skills = Skill::find(1);
+
+        foreach ($skills->applicants as $applicant) {
+                //echo($skill);
+
+        }
+
+
+        return response()->json($skills);
     }
 
     public function applicantsbyskill($idSkill)
     {
-        $applicants = Applicant::with('skills')->get();
-        return response()->json($applicants);
+
     }
 
     /**
@@ -47,7 +64,11 @@ class ApplicantsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $applicant = new Applicant();
+        $applicant->fill($request->all());
+        $applicant->save();
+
+        return response()->json($applicant, 201);
     }
 
     /**
@@ -82,23 +103,23 @@ class ApplicantsController extends Controller
        // Eu quero os applicants que tem X skill
 
 
-        $skills = Skill::where('skill', '=', 1)->get();
+        // $skills = Skill::where('skill', '=', 1)->get();
 
-        $applicantsArray = [];
-        foreach ($skills as $skill){
+        // $applicantsArray = [];
+        // foreach ($skills as $skill){
 
-            ($skill->applicant_id);
+        //     ($skill->applicant_id);
 
-        }
+        // }
 
-        $applicants = Applicant::where
+        // $applicants = Applicant::where
 
 
        // $applicants = Applicants::find()->skills()->where('applicant_id', '=', 'foo');
 
 
 
-        return response()->json($skills);
+       // return response()->json($skills);
     }
 
     /**

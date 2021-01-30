@@ -15,7 +15,7 @@ class SkillsController extends Controller
      */
     public function index()
     {
-        $skills = Skill::with('applicants')->get();
+        $skills = Skill::all()->get();
         return response()->json($skills);
     }
 
