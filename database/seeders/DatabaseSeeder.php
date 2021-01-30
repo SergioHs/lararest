@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Skill;
 use App\Models\Applicant;
+use App\Models\ApplicantSkill;
 use Illuminate\Database\Seeder;
 
 
@@ -21,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ApplicantsSeeder::class,
             SkillsSeeder::class,
+            applicantskillSeeder::class,
+
         ]);
     }
 }

@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Applicant extends Model
+class ApplicantSkill extends Model
 {
-    protected $fillable = ['nome', 'email', 'idade', 'linkedin'];
+    protected $table = 'applicant_skill';
 
     protected $dates = ['deleted_at'];
 
     use HasFactory;
-
-    public function skills()
-    {
-        return $this->belongsToMany(Skill::class);
-    }
 }

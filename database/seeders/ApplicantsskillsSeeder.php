@@ -4,10 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Skill;
-use App\Models\Applicant;
-
-class SkillsSeeder extends Seeder
+class ApplicantsskillsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,8 +13,9 @@ class SkillsSeeder extends Seeder
      */
     public function run()
     {
-        Skill::create([
-            'descricao' => 'PHP'
+        ApplicantSkill::create([
+            'applicants_id' => '1',
+            'skills_id' => '1'
         ]);
     }
 }

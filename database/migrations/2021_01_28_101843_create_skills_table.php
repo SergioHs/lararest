@@ -15,12 +15,7 @@ class CreateSkillsTable extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('applicant_id')->unsigned();
-            $table->foreign('applicant_id')
-                ->references('id')
-                ->on('applicants')
-                ->onDelete('cascade');
-            $table->integer('skill');
+            $table->string('descricao');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -13,8 +13,8 @@ class Skill extends Model
 
     use HasFactory;
 
-    function applicants() {
-
-        return $this->hasMany(Applicant::class, 'applicant_id');
+    public function applicants()
+    {
+        return $this->belongsToMany(Applicant::class);
     }
 }
