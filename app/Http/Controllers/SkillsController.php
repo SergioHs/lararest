@@ -48,7 +48,16 @@ class SkillsController extends Controller
      */
     public function show($id)
     {
-        //
+        //Skill com os candiatos que tem
+        //$skills = Skill::find(1);
+
+        //foreach ($skills->applicants as $applicant) {
+                //echo($skill);
+
+        //}
+
+
+        //return response()->json($skills);
     }
 
     /**
