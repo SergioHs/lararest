@@ -13,34 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//  Route::get('/', function () {
-//      return view('welcome');
-// });
-
 Route::post('auth', 'App\Http\Controllers\AuthController@authenticate');
 
-Route::get('error', function () {
-  return response()->json(['message' => 'Auth Error', 'status' => '401']);
-})->name('error');
+Route::group([
 
+  'middleware' => 'api',
+  'namespace' => 'App\Http\Controllers',
+  'prefix' => 'auth'
 
-Route::group(array('prefix' => 'api', 'middleware' => ['auth']), function()
-{
-  Route::get('/', function () {
-    return response()->json(['message' => 'Applicants API', 'status' => 'Connected']);
-  })->name('/');
+], function ($router) {
 
-  Route::resource('applicants', 'App\Http\Controllers\ApplicantsController');
-  Route::resource('skills', 'App\Http\Controllers\SkillsController');
+  Route::post('login', 'AuthController@login');
+  Route::post('logout', 'AuthController@logout');
+  Route::post('refresh', 'AuthController@refresh');
+  Route::post('me', 'AuthController@me');
 
-
-  Route::get('/error', function () {
-    return response()->json(['message' => 'Applicants API', 'status' => '401 Forbbiden']);
-  });
-
-});
-
-Route::get('/', function () {
-    return redirect('api');
-    //Aqui pode ser a rota do SPA
 });

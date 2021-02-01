@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::resource('applicants', 'App\Http\Controllers\ApplicantsController');
+Route::resource('skills', 'App\Http\Controllers\SkillsController');
+
+Route::get('error', function () {
+   return response()->json(['message' => 'Auth Error', 'status' => '401']);
+})->name('error');
+
+Route::group(array('prefix' => 'api'), function()
+ {
+   Route::get('/', function () {
+     return response()->json(['message' => 'Applicants API', 'status' => 'Connected']);
+   })->name('/');
+
 });

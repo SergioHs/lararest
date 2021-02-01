@@ -13,42 +13,55 @@ use JWTAuth;
 use Hash;
 use Validator;
 use TymonJWTAuthExceptionsJWTException;
+use Auth;
 
 
 class AuthController extends Controller
 {
-    public function authenticate(Request $request) {
-        // Get only email and password from request
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    public function login(Request $request)
+    {        
         $credentials = $request->only('email', 'password');
-  
-        // Get user by email
-        $user = User::where('email', $credentials['email'])->first();
-  
-        // Validate User
-        if(!$user) {
-          return response()->json([
-            'error' => 'Invalid credentials'
-          ], 401);
+
+        if ($token = $this->guard()->attempt($credentials)) {
+            return $this->respondWithToken($token);
         }
-  
-        // Validate Password
-        if (!Hash::check($credentials['password'], $user->password)) {
-            return response()->json([
-              'error' => 'Invalid credentials'
-            ], 401);
-        }
-  
-        // Generate Token
-        $token = JWTAuth::fromUser($user);
-  
-        // Get expiration time
-        $objectToken = JWTAuth::setToken($token);
-        $expiration = JWTAuth::decode($objectToken->getToken())->get('exp');
-  
+
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    public function me()
+    {
+        return response()->json($this->guard()->user());
+    }
+
+    public function logout()
+    {
+        $this->guard()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh()
+    {
+        return $this->respondWithToken($this->guard()->refresh());
+    }
+
+    public function guard()
+    {
+        return Auth::guard();
+    }
+
+    protected function respondWithToken($token)
+    {
         return response()->json([
-          'access_token' => $token,
-          'token_type' => 'bearer',
-          'expires_in' => JWTAuth::decode()->get('exp')
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60
         ]);
     }
 }

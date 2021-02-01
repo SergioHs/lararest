@@ -16,6 +16,11 @@ use Illuminate\Support\Arr;
 
 class ApplicantsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         //Returns all applicants and your skills
