@@ -16,16 +16,24 @@ use Illuminate\Support\Facades\Route;
 //  Route::get('/', function () {
 //      return view('welcome');
 // });
+Route::get('error', function () {
+  return response()->json(['message' => 'Auth Error', 'status' => '401']);
+})->name('error');
 
-Route::group(array('prefix' => 'api'), function()
+
+Route::group(array('prefix' => 'api', 'middleware' => ['auth']), function()
 {
-
   Route::get('/', function () {
-      return response()->json(['message' => 'Applicants API', 'status' => 'Connected']);;
-  });
+    return response()->json(['message' => 'Applicants API', 'status' => 'Connected']);
+  })->name('/');
 
   Route::resource('applicants', 'App\Http\Controllers\ApplicantsController');
   Route::resource('skills', 'App\Http\Controllers\SkillsController');
+
+
+  Route::get('/error', function () {
+    return response()->json(['message' => 'Applicants API', 'status' => '401 Forbbiden']);
+  });
 
 });
 
