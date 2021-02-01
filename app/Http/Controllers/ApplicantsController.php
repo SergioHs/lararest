@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Skill;
 use App\Models\Applicant;
+use App\Models\ApplicantSkill;
+
 
 use Illuminate\Support\Facades\DB;
 
@@ -16,6 +18,7 @@ class ApplicantsController extends Controller
 {
     public function index()
     {
+        //Returns all applicants and your skills
         $applicants = Applicant::get();
 
         $allApllicantsWithSkills = [];
@@ -27,13 +30,9 @@ class ApplicantsController extends Controller
         return response()->json($allApllicantsWithSkills, 201);
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
+        //Store new applicant with your skills
         $applicant = new Applicant();
         $applicant->fill($request->all());
         $applicant->save();
@@ -43,12 +42,15 @@ class ApplicantsController extends Controller
 
             foreach($idsSkills as $idSkill){
                 $applicant->skills()->attach($idSkill);
-            }
-
-            return response()->json('OK', 201);
-            
+            }            
         }
-        return response()->json('ok', 201);
+
+        if($applicant->save()){
+            return response()->json('ok', 201);
+        } else {
+            return response()->json('error', 500);
+        }
+        
     }
 
     public function show()
@@ -59,18 +61,49 @@ class ApplicantsController extends Controller
 
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(Request $request, $id)
     {
-        //
+        $applicant = Applicant::find($id);
+
+        if(!$applicant) {
+            return response()->json([
+                'message'   => 'Record not found',
+            ], 404);
+        }
+
+        $applicant->fill($request->all());
+        $applicant->save();
+
+        //Deleta Skills
+        $skillsOfApplicant = ApplicantSkill::where('applicant_id', '=', $id);
+        $skillsOfApplicant->delete();
+
+        //Recria Skills
+        if($request->skills){ 
+            $idsSkills = explode(',', $request->skills);   
+
+            foreach($idsSkills as $idSkill){
+                $applicant->skills()->attach($idSkill);
+            }            
+        }
+
+        return response()->json($applicant->save());
     }
 
     public function destroy($id)
     {
-        //
+        //find the applicant and delete him, and your skills
+        $applicant = Applicant::find($id);
+        if(!$applicant) {
+            return response()->json([
+                'message'   => 'Record not found',
+            ], 404);
+        } else {
+            $applicant->delete();
+            return response()->json([
+                'message'   => 'Record Deleted',
+            ], 201);
+            
+        }
     }
 }
