@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 //  Route::get('/', function () {
 //      return view('welcome');
 // });
+
+Route::post('auth', 'App\Http\Controllers\AuthController@authenticate');
+
 Route::get('error', function () {
   return response()->json(['message' => 'Auth Error', 'status' => '401']);
 })->name('error');
